@@ -7,13 +7,14 @@ package osbuild
 // containing the indicated partitions. Finally, the image is converted into
 // the target format and stored with the given filename.
 type QEMUAssemblerOptions struct {
-	Bootloader *QEMUBootloader `json:"bootloader,omitempty"`
-	Format     string          `json:"format"`
-	Filename   string          `json:"filename"`
-	Size       uint64          `json:"size"`
-	PTUUID     string          `json:"ptuuid"`
-	PTType     string          `json:"pttype"`
-	Partitions []QEMUPartition `json:"partitions"`
+	Bootloader    *QEMUBootloader `json:"bootloader,omitempty"`
+	Format        string          `json:"format"`
+	FormatOptions *string         `json:"format_options,omitempty"`
+	Filename      string          `json:"filename"`
+	Size          uint64          `json:"size"`
+	PTUUID        string          `json:"ptuuid"`
+	PTType        string          `json:"pttype"`
+	Partitions    []QEMUPartition `json:"partitions"`
 }
 
 type QEMUPartition struct {

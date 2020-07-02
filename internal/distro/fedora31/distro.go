@@ -5,6 +5,8 @@ import (
 	"errors"
 	"sort"
 
+	"github.com/aws/aws-sdk-go/aws"
+
 	"github.com/osbuild/osbuild-composer/internal/distro"
 	"github.com/osbuild/osbuild-composer/internal/osbuild"
 
@@ -218,7 +220,7 @@ func New() *Fedora31 {
 		bootable:      true,
 		defaultSize:   6 * GigaByte,
 		assembler: func(uefi bool, size uint64) *osbuild.Assembler {
-			return qemuAssembler("raw", "image.raw", uefi, size)
+			return qemuAssembler("vmdk", aws.String("subformat=streamOptimized"), "image.raw", uefi, size)
 		},
 	}
 
@@ -246,7 +248,7 @@ func New() *Fedora31 {
 		bootable:      true,
 		defaultSize:   2 * GigaByte,
 		assembler: func(uefi bool, size uint64) *osbuild.Assembler {
-			return qemuAssembler("qcow2", "disk.qcow2", uefi, size)
+			return qemuAssembler("qcow2", nil, "disk.qcow2", uefi, size)
 		},
 	}
 
@@ -273,7 +275,7 @@ func New() *Fedora31 {
 		bootable:      true,
 		defaultSize:   2 * GigaByte,
 		assembler: func(uefi bool, size uint64) *osbuild.Assembler {
-			return qemuAssembler("qcow2", "disk.qcow2", uefi, size)
+			return qemuAssembler("qcow2", nil, "disk.qcow2", uefi, size)
 		},
 	}
 
@@ -310,7 +312,7 @@ func New() *Fedora31 {
 		bootable:      true,
 		defaultSize:   2 * GigaByte,
 		assembler: func(uefi bool, size uint64) *osbuild.Assembler {
-			return qemuAssembler("vpc", "disk.vhd", uefi, size)
+			return qemuAssembler("vpc", nil, "disk.vhd", uefi, size)
 		},
 	}
 
@@ -334,7 +336,7 @@ func New() *Fedora31 {
 		bootable:      true,
 		defaultSize:   2 * GigaByte,
 		assembler: func(uefi bool, size uint64) *osbuild.Assembler {
-			return qemuAssembler("vmdk", "disk.vmdk", uefi, size)
+			return qemuAssembler("vmdk", nil, "disk.vmdk", uefi, size)
 		},
 	}
 
@@ -628,15 +630,16 @@ func (r *imageType) selinuxStageOptions() *osbuild.SELinuxStageOptions {
 	}
 }
 
-func qemuAssembler(format string, filename string, uefi bool, size uint64) *osbuild.Assembler {
+func qemuAssembler(format string, formatOptions *string, filename string, uefi bool, size uint64) *osbuild.Assembler {
 	var options osbuild.QEMUAssemblerOptions
 	if uefi {
 		options = osbuild.QEMUAssemblerOptions{
-			Format:   format,
-			Filename: filename,
-			Size:     size,
-			PTUUID:   "8DFDFF87-C96E-EA48-A3A6-9408F1F6B1EF",
-			PTType:   "gpt",
+			Format:        format,
+			FormatOptions: formatOptions,
+			Filename:      filename,
+			Size:          size,
+			PTUUID:        "8DFDFF87-C96E-EA48-A3A6-9408F1F6B1EF",
+			PTType:        "gpt",
 			Partitions: []osbuild.QEMUPartition{
 				{
 					Start: 2048,
@@ -663,11 +666,12 @@ func qemuAssembler(format string, filename string, uefi bool, size uint64) *osbu
 		}
 	} else {
 		options = osbuild.QEMUAssemblerOptions{
-			Format:   format,
-			Filename: filename,
-			Size:     size,
-			PTUUID:   "0x14fc63d2",
-			PTType:   "mbr",
+			Format:        format,
+			FormatOptions: formatOptions,
+			Filename:      filename,
+			Size:          size,
+			PTUUID:        "0x14fc63d2",
+			PTType:        "mbr",
 			Partitions: []osbuild.QEMUPartition{
 				{
 					Start:    2048,

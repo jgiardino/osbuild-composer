@@ -3418,7 +3418,8 @@
       "assembler": {
         "name": "org.osbuild.qemu",
         "options": {
-          "format": "raw",
+          "format": "vmdk",
+          "format_options": "subformat=streamOptimized",
           "filename": "image.raw",
           "size": 6442450944,
           "ptuuid": "0x14fc63d2",
