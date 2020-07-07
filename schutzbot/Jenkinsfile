@@ -202,6 +202,30 @@ void run_tests(test_type) {
             label: "Integration test: AWS",
             script: "test/image-tests/aws.sh"
         )
+        sh (
+            label: "Integration test: AWS",
+            script: "test/image-tests/aws.sh"
+        )
+        sh (
+            label: "Integration test: AWS",
+            script: "test/image-tests/aws.sh"
+        )
+        sh (
+            label: "Integration test: AWS",
+            script: "test/image-tests/aws.sh"
+        )
+        sh (
+            label: "Integration test: AWS",
+            script: "test/image-tests/aws.sh"
+        )
+        sh (
+            label: "Integration test: AWS",
+            script: "test/image-tests/aws.sh"
+        )
+        sh (
+            label: "Integration test: AWS",
+            script: "test/image-tests/aws.sh"
+        )
     }
 
 }
