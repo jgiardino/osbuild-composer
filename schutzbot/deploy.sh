@@ -40,7 +40,7 @@ sudo dnf repository-packages osbuild-mock list
 
 # Install the Image Builder packages.
 # Note: installing only -tests to catch missing dependencies
-retry sudo dnf -y install osbuild-composer-tests
+retry sudo dnf -y install osbuild-composer-tests osbuild-19
 
 # Copy the internal repositories into place when needed.
 if curl -fs http://download.devel.redhat.com > /dev/null; then
